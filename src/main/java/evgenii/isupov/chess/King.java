@@ -77,11 +77,4 @@ public class King extends ChessPiece {
         }
         return false;
     }
-
-    /**
-     * Вспомогательный метод для проверки корректности позиции на доске.
-     */
-    private boolean isValidPosition(int line, int column) {
-        return line >= 0 && line < 8 && column >= 0 && column < 8;
-    }
 }

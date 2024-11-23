@@ -57,15 +57,4 @@ public class Horse extends ChessPiece {
 
         return false;
     }
-
-    /**
-     * Вспомогательный метод для проверки корректности позиции на доске.
-     *
-     * @param line   Строка.
-     * @param column Столбец.
-     * @return true, если позиция на доске, иначе false.
-     */
-    private boolean isValidPosition(int line, int column) {
-        return line >= 0 && line < 8 && column >= 0 && column < 8;
-    }
 }
