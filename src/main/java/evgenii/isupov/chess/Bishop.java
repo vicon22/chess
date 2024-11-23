@@ -51,7 +51,7 @@ public class Bishop extends ChessPiece {
             return false; // Движение не по диагонали
         }
 
-        // Проверяем, что путь слона свободен
+        // Проверяем, что путь слона свободен или на пути есть фигура противоположного цвета
         int stepRow = (toLine > line) ? 1 : -1;  // Шаг по строкам
         int stepCol = (toColumn > column) ? 1 : -1; // Шаг по столбцам
 
@@ -60,13 +60,18 @@ public class Bishop extends ChessPiece {
 
         while (currentRow != toLine && currentCol != toColumn) {
             if (chessBoard.board[currentRow][currentCol] != null) {
-                return false; // На пути есть другая фигура
+                // Если на пути стоит фигура, проверяем, можем ли мы её съесть
+                if (!chessBoard.board[currentRow][currentCol].getColor().equals(this.getColor())) {
+                    return true; // Можем съесть фигуру противоположного цвета
+                } else {
+                    return false; // На пути стоит фигура того же цвета
+                }
             }
             currentRow += stepRow;
             currentCol += stepCol;
         }
 
-        return true;
+        return true; // Путь слона свободен
     }
 
     /**
@@ -80,4 +85,3 @@ public class Bishop extends ChessPiece {
         return line >= 0 && line < 8 && column >= 0 && column < 8;
     }
 }
-

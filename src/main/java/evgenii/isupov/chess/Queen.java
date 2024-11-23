@@ -43,14 +43,14 @@ public class Queen extends ChessPiece {
             return false;
         }
 
-        // Проверяем движение как у ладьи
+        // Проверяем движение как у ладьи (по горизонтали или вертикали)
         if (line == toLine || column == toColumn) {
-            return isPathClear(chessBoard, line, column, toLine, toColumn);
+            return isPathClear(chessBoard, line, column, toLine, toColumn, false);
         }
 
-        // Проверяем движение как у слона
+        // Проверяем движение как у слона (по диагонали)
         if (Math.abs(line - toLine) == Math.abs(column - toColumn)) {
-            return isPathClear(chessBoard, line, column, toLine, toColumn);
+            return isPathClear(chessBoard, line, column, toLine, toColumn, false);
         }
 
         return false;
@@ -65,8 +65,17 @@ public class Queen extends ChessPiece {
 
     /**
      * Вспомогательный метод для проверки, что путь между начальной и конечной точкой свободен.
+     * При этом, если на конечной клетке находится фигура противника, перемещение возможно.
+     *
+     * @param chessBoard Объект шахматной доски.
+     * @param line       Текущая строка (ряд).
+     * @param column     Текущий столбец.
+     * @param toLine     Конечная строка.
+     * @param toColumn   Конечный столбец.
+     * @param isAttack   Нужно ли учитывать возможность атаки (если true, то проверяем на фигуру другого цвета).
+     * @return true, если путь свободен или фигура может быть съедена, иначе false.
      */
-    private boolean isPathClear(ChessBoard chessBoard, int line, int column, int toLine, int toColumn) {
+    private boolean isPathClear(ChessBoard chessBoard, int line, int column, int toLine, int toColumn, boolean isAttack) {
         int stepRow = Integer.compare(toLine, line);
         int stepCol = Integer.compare(toColumn, column);
 
@@ -81,6 +90,15 @@ public class Queen extends ChessPiece {
             currentCol += stepCol;
         }
 
-        return true;
+        // Проверяем, может ли фигура на конечной клетке быть съедена
+        ChessPiece targetPiece = chessBoard.board[toLine][toColumn];
+        if (targetPiece != null) {
+            // Фигура может быть съедена только если она противоположного цвета
+            if (targetPiece.getColor().equals(this.getColor())) {
+                return false; // Фигура того же цвета, не может быть съедена
+            }
+        }
+
+        return true; // Путь свободен или фигура может быть съедена
     }
 }

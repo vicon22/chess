@@ -43,27 +43,32 @@ public class Pawn extends ChessPiece {
             return false;
         }
 
-        // Пешка не может двигаться по диагонали в пустую клетку
-        if (column != toColumn) {
-            return false;
-        }
-
-        // Проверяем движение пешки в зависимости от её цвета
+        // Белая пешка
         if (getColor().equals("White")) {
-            // Белая пешка
-            if (line == 1 && toLine == line + 2 && chessBoard.board[toLine][toColumn] == null) {
-                return true; // Первый ход на 2 клетки вперёд
+            // Первый ход на 2 клетки вперёд
+            if (line == 1 && toLine == line + 2 && column == toColumn && chessBoard.board[toLine][toColumn] == null) {
+                return true;
             }
-            if (toLine == line + 1 && chessBoard.board[toLine][toColumn] == null) {
-                return true; // Ход на 1 клетку вперёд
+            // Ход на 1 клетку вперёд
+            if (toLine == line + 1 && column == toColumn && chessBoard.board[toLine][toColumn] == null) {
+                return true;
             }
-        } else if (getColor().equals("Black")) {
-            // Чёрная пешка
-            if (line == 6 && toLine == line - 2 && chessBoard.board[toLine][toColumn] == null) {
-                return true; // Первый ход на 2 клетки вперёд
+            if (chessBoard.board[toLine][toColumn] != null && !chessBoard.board[toLine][toColumn].getColor().equals(this.getColor())) {
+                return true; // Если на клетке фигура противоположного цвета
             }
-            if (toLine == line - 1 && chessBoard.board[toLine][toColumn] == null) {
-                return true; // Ход на 1 клетку вперёд
+        }
+        // Чёрная пешка
+        else if (getColor().equals("Black")) {
+            // Первый ход на 2 клетки вперёд
+            if (line == 6 && toLine == line - 2 && column == toColumn && chessBoard.board[toLine][toColumn] == null) {
+                return true;
+            }
+            // Ход на 1 клетку вперёд
+            if (toLine == line - 1 && column == toColumn && chessBoard.board[toLine][toColumn] == null) {
+                return true;
+            }
+            if (chessBoard.board[toLine][toColumn] != null && !chessBoard.board[toLine][toColumn].getColor().equals(this.getColor())) {
+                return true; // Если на клетке фигура противоположного цвета
             }
         }
 
@@ -81,4 +86,3 @@ public class Pawn extends ChessPiece {
         return line >= 0 && line < 8 && column >= 0 && column < 8;
     }
 }
-

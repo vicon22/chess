@@ -47,7 +47,15 @@ public class Horse extends ChessPiece {
         int deltaRow = Math.abs(line - toLine);
         int deltaCol = Math.abs(column - toColumn);
 
-        return (deltaRow == 2 && deltaCol == 1) || (deltaRow == 1 && deltaCol == 2);
+        // Если перемещение соответствует ходу коня, проверяем занятость целевой клетки
+        if ((deltaRow == 2 && deltaCol == 1) || (deltaRow == 1 && deltaCol == 2)) {
+            ChessPiece target = chessBoard.board[toLine][toColumn];
+
+            // Если целевая клетка пуста, или на ней стоит фигура другого цвета, конь может съесть фигуру
+            return target == null || !target.getColor().equals(getColor());
+        }
+
+        return false;
     }
 
     /**
@@ -61,4 +69,3 @@ public class Horse extends ChessPiece {
         return line >= 0 && line < 8 && column >= 0 && column < 8;
     }
 }
-

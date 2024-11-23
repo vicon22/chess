@@ -67,6 +67,13 @@ public class Rook extends ChessPiece {
             }
         }
 
+        // Проверяем, можно ли съесть фигуру на целевой клетке
+        ChessPiece target = chessBoard.board[toLine][toColumn];
+        if (target != null && !target.getColor().equals(this.getColor())) {
+            return true; // Если на клетке фигура другого цвета, ладья может её съесть
+        }
+
+        // Если на клетке нет фигуры, или она того же цвета, перемещение возможно
         return true;
     }
 
@@ -81,4 +88,3 @@ public class Rook extends ChessPiece {
         return line >= 0 && line < 8 && column >= 0 && column < 8;
     }
 }
-

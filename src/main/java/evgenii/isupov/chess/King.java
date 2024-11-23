@@ -33,6 +33,7 @@ public class King extends ChessPiece {
      */
     @Override
     public boolean canMoveToPosition(ChessBoard chessBoard, int line, int column, int toLine, int toColumn) {
+        // Проверяем, что позиции корректны
         if (!isValidPosition(line, column) || !isValidPosition(toLine, toColumn)) {
             return false;
         }
@@ -45,7 +46,10 @@ public class King extends ChessPiece {
         // Король может двигаться максимум на 1 клетку в любую сторону
         if (Math.abs(line - toLine) <= 1 && Math.abs(column - toColumn) <= 1) {
             // Проверяем, не находится ли конечная позиция под атакой
-            return !isUnderAttack(chessBoard, toLine, toColumn);
+            if (chessBoard.board[toLine][toColumn] == null || !chessBoard.board[toLine][toColumn].getColor().equals(this.getColor())) {
+                // Если на целевой клетке пусто или там фигура противника
+                return true;  // Король может переместиться
+            }
         }
 
         return false;
@@ -60,12 +64,13 @@ public class King extends ChessPiece {
      * @return true, если клетка под атакой, иначе false.
      */
     public boolean isUnderAttack(ChessBoard chessBoard, int line, int column) {
+        // Проверяем все фигуры противника
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 ChessPiece piece = chessBoard.board[i][j];
                 if (piece != null && !piece.getColor().equals(this.getColor())) {
                     if (piece.canMoveToPosition(chessBoard, i, j, line, column)) {
-                        return true;
+                        return true; // Если фигура противника может атаковать клетку, значит она под атакой
                     }
                 }
             }
@@ -80,4 +85,3 @@ public class King extends ChessPiece {
         return line >= 0 && line < 8 && column >= 0 && column < 8;
     }
 }
-
